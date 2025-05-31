@@ -7,8 +7,11 @@ DEBUG = True
 AUTH_USER_MODEL = 'famadata.CustomUser'
 
 ALLOWED_HOSTS = [
-    'https://fama-project-production.up.railway.app/',
-    'fama-project-production.up.railway.app/',
+'*'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://fama-project-production.up.railway.app',   # Allow the production domain
 ]
 
 STATIC_URL = '/static/'
@@ -29,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crew',
     'famadata',
-    'rest_framework',  # Django REST Framework for API development
+    'rest_framework',
+    'corsheaders'  # Django REST Framework for API development
     # your apps here
     'rest_framework.authtoken',  # For token authentication
     'django_filters',  # For filtering support in DRF
@@ -38,6 +42,7 @@ ROOT_URLCONF = 'airline_backend.urls'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Middleware for CORS support
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
