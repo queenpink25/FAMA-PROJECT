@@ -317,6 +317,8 @@ class AlertViewSet(viewsets.ModelViewSet):
     search_fields = ['title', 'message']
     ordering_fields = ['created_at', 'severity']
     ordering = ['-created_at']
+
+    
     
     @action(detail=False, methods=['get'])
     def active_alerts(self, request):
