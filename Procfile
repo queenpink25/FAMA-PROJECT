@@ -1,0 +1,1 @@
+web gunicorn FAMA1.wsgi 
