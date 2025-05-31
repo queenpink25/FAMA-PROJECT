@@ -33,10 +33,9 @@ INSTALLED_APPS = [
     'crew',
     'famadata',
     'rest_framework',
-    'corsheaders'  # Django REST Framework for API development
-    # your apps here
-    'rest_framework.authtoken',  # For token authentication
-    'django_filters',  # For filtering support in DRF
+    'corsheaders',
+    'rest_framework.authtoken', 
+    'django_filters',  
 ]
 ROOT_URLCONF = 'airline_backend.urls'
 MIDDLEWARE = [
