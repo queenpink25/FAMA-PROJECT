@@ -4,6 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'your-secret-key-here'
 
 DEBUG = True
+AUTH_USER_MODEL = 'famadata.CustomUser'
 
 ALLOWED_HOSTS = []
 
@@ -24,7 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crew',
+    'famadata',
+    'rest_framework',  # Django REST Framework for API development
     # your apps here
+    'rest_framework.authtoken',  # For token authentication
+    'django_filters',  # For filtering support in DRF
 ]
 ROOT_URLCONF = 'airline_backend.urls'
 MIDDLEWARE = [
@@ -53,3 +58,9 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

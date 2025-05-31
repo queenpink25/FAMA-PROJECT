@@ -1,0 +1,18 @@
+POST http://localhost:8000/api/v1/users/ HTTP/1.1
+Content-Type: application/json
+
+{    "username": "oops",
+    "password": "bluey",
+    "phone_number": "+1234567890",
+    "user_type": "pilot"
+}
+
+
+####
+POST http://localhost:8000/auth/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "bluey"
+}
