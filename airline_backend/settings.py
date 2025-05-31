@@ -6,7 +6,10 @@ SECRET_KEY = 'your-secret-key-here'
 DEBUG = True
 AUTH_USER_MODEL = 'famadata.CustomUser'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://fama-project-production.up.railway.app/',
+    'fama-project-production.up.railway.app/',
+]
 
 STATIC_URL = '/static/'
 
