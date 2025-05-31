@@ -1,1 +1,1 @@
-web gunicorn FAMA1.wsgi 
+web: gunicorn FAMA1.wsgi 
