@@ -1,7 +1,7 @@
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'your-secret-key-here'
+SECRET_KEY = 'b_!6d&h!-jvejx6l1k!50r(f9r^_(p)tn5qu)_$yn7gs(k)f)1'
 
 DEBUG = True
 AUTH_USER_MODEL = 'famadata.CustomUser'
@@ -9,17 +9,29 @@ AUTH_USER_MODEL = 'famadata.CustomUser'
 ALLOWED_HOSTS = [
     'https://fama-project-production.up.railway.app/',
     'fama-project-production.up.railway.app/',
+    '127.0.0.1', 'localhost'
 ]
 
 STATIC_URL = '/static/'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',  # For Django 3.1+; if using older Django, use: os.path.join(BASE_DIR, 'db.sqlite3')
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # For Django 3.1+; if using older Django, use: os.path.join(BASE_DIR, 'db.sqlite3')
-    }
+        'ENGINE': 'django.db.backends.postgresql',  # Use 'postgresql' for PostgreSQL
+        'NAME': 'railway',  
+        'USER':  'postgres',
+        'PASSWORD': 'IOeEupilTrGnpaxfcphZaqoEZzvzesqE',  
+        'HOST': 'yamabiko.proxy.rlwy.net', 
+        'PORT': '10292', 
+        }
 }
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
