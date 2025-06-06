@@ -4,34 +4,44 @@ from .models import (
     CustomUser, CrewProfile, Flight, DutyRoster, 
     FatigueLog, FlightSwapRequest, Alert, AlertRecipient
 )
+from phonenumbers import parse, is_valid_number, format_number, PhoneNumberFormat, NumberParseException
+
 
 User = get_user_model()
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    """Serializer for CustomUser model"""
     password = serializers.CharField(write_only=True)
-    
+
     class Meta:
         model = CustomUser
         fields = [
-            'id', 'username',
-            'user_type', 'phone_number', 'is_active_duty', 'duty_start_time',
-            'created_at', 'is_staff','updated_at', 'password'
+            'id', 'username', 'full_name', 'user_type',
+            'phone_number', 'is_active_duty', 'duty_start_time',
+            'created_at', 'is_staff', 'updated_at', 'password'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
         }
-    
+
+    def validate_phone_number(self, value):
+        try:
+            parsed = parse(value, "UG")
+            if not is_valid_number(parsed):
+                raise serializers.ValidationError("Invalid phone number for Uganda.")
+            return format_number(parsed, PhoneNumberFormat.E164)  # +256...
+        except NumberParseException:
+            raise serializers.ValidationError("Phone number format is not recognized.")
+
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = CustomUser.objects.create_user(**validated_data)
         user.set_password(password)
         user.save()
         return user
-    
+
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
         for attr, value in validated_data.items():

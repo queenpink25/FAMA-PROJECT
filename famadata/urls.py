@@ -2,6 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 from . import views
+from django.http import HttpResponse
+
 
 # Create a router and register our viewsets with it
 router = DefaultRouter()
@@ -24,4 +26,11 @@ urlpatterns = [
     
     # Additional custom endpoints can be added here
     # Example: path('api/v1/custom-endpoint/', views.custom_view, name='custom-endpoint'),
+]
+
+def home(request):
+    return HttpResponse("Welcome to the FAMA Airline API")
+
+urlpatterns += [
+    path('', home, name='home'), 
 ]

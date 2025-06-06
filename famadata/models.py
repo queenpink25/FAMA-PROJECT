@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 import uuid
+import phonenumbers
+from phonenumbers.phonenumberutil import NumberParseException
 
 class CustomUserManager(BaseUserManager):
     """Manager for CustomUser model"""
@@ -11,10 +13,20 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The Username field must be set')
         if not phone_number:
             raise ValueError('The Phone Number field must be set')
+        phone_number = self.normalize_phone_number(phone_number)
+
         user = self.model(username=username, phone_number=phone_number, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
+    def normalize_phone_number(self, phone):
+        try:
+            parsed = phonenumbers.parse(phone, "UG")  # UG = Uganda
+            if not phonenumbers.is_valid_number(parsed):
+                raise ValueError("Invalid phone number for Uganda")
+            return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
+        except NumberParseException:
+            raise ValueError("Invalid phone number format")
 
     def create_superuser(self, username, phone_number, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
@@ -31,6 +43,8 @@ class CustomUser(AbstractBaseUser):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=150, unique=True)
+    full_name = models.CharField(max_length=255, blank=True, null=True)  # Full name of the user
+    email = models.EmailField(max_length=255, unique=True, blank=True, null=True)  # Optional email field
     phone_number = models.CharField(max_length=15, unique=True)
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
     is_active_duty = models.BooleanField(default=False)
@@ -43,7 +57,7 @@ class CustomUser(AbstractBaseUser):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['phone_number']
+    REQUIRED_FIELDS = ['phone_number','email','full_name']
 
     def __str__(self):
         return self.username
